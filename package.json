@@ -1,0 +1,23 @@
+{
+  "name": "pocketsim-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PocketSim — Lightweight AI-Native React Native Simulator",
+  "scripts": {
+    "build": "turbo run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "dev": "pnpm --filter @pocketsim/cli dev"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.7.2",
+    "turbo": "^2.3.3",
+    "vitest": "^2.1.8"
+  },
+  "packageManager": "pnpm@11.15.1"
+}

@@ -1,0 +1,19 @@
+name: Complex App Authentication & Dashboard Test
+device: iphone-15-pro
+
+steps:
+  - launchApp
+  - assertVisible:
+      text: "Sign In to Dashboard"
+  - inputText:
+      text: "admin@pocketsim.dev"
+  - tapOn:
+      text: "Continue"
+  - waitFor:
+      text: "Dashboard"
+  - assertVisible:
+      text: "Dashboard"
+  - assertVisible:
+      text: "PocketSim Cloud Suite"
+  - takeScreenshot:
+      name: dashboard-authenticated

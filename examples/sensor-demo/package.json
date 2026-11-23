@@ -1,0 +1,14 @@
+{
+  "name": "sensor-demo",
+  "version": "1.0.0",
+  "private": true,
+  "main": "App.tsx",
+  "dependencies": {
+    "expo": "^51.0.0",
+    "expo-location": "~17.0.1",
+    "expo-battery": "~8.2.4",
+    "expo-sensors": "~13.0.9",
+    "react": "18.2.0",
+    "react-native": "0.74.2"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@pocketsim/desktop",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "start": "node ./dist/server.js"
+  },
+  "dependencies": {
+    "@pocketsim/shared-types": "workspace:*",
+    "@pocketsim/device-profiles": "workspace:*",
+    "@pocketsim/sensor-engine": "workspace:*",
+    "@pocketsim/permission-engine": "workspace:*",
+    "@pocketsim/runtime-core": "workspace:*",
+    "@pocketsim/react-native-runtime": "workspace:*",
+    "@pocketsim/device-shell": "workspace:*",
+    "@pocketsim/rendering-engine": "workspace:*",
+    "@pocketsim/visual-diff": "workspace:*",
+    "@pocketsim/local-bridge": "workspace:*",
+    "@pocketsim/automation-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

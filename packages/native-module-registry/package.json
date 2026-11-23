@@ -1,0 +1,21 @@
+{
+  "name": "@pocketsim/native-module-registry",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pocketsim/shared-types": "workspace:*",
+    "@pocketsim/device-profiles": "workspace:*",
+    "@pocketsim/sensor-engine": "workspace:*",
+    "@pocketsim/permission-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

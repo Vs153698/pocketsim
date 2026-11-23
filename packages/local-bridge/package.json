@@ -1,0 +1,28 @@
+{
+  "name": "@pocketsim/local-bridge",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pocketsim/shared-types": "workspace:*",
+    "@pocketsim/device-profiles": "workspace:*",
+    "@pocketsim/sensor-engine": "workspace:*",
+    "@pocketsim/permission-engine": "workspace:*",
+    "@pocketsim/runtime-core": "workspace:*",
+    "@pocketsim/react-native-runtime": "workspace:*",
+    "@pocketsim/device-shell": "workspace:*",
+    "@pocketsim/rendering-engine": "workspace:*",
+    "@pocketsim/visual-diff": "workspace:*",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
