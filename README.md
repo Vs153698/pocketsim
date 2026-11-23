@@ -49,39 +49,102 @@ PocketSim is a lightweight virtual mobile development and automated testing envi
 
 ---
 
-## 3. Quick Start
+## 3. Quick Start & How to Run Your Real Apps
 
-### Installation
+### Setup & Build
 
 ```bash
 # Clone repository
-git clone https://github.com/vaibhavsingh/pocketsim.git
+git clone https://github.com/Vs153698/pocketsim.git
 cd pocketsim
 
-# Install dependencies and build monorepo packages
+# Install dependencies and build all packages
 pnpm install
 pnpm build
+
+# Run full test suite (15 packages, 46 tests green)
+pnpm test
 ```
 
-### Starting the Simulator
+### Starting the Simulator & Desktop UI
 
 ```bash
-# Start PocketSim in any React Native or Expo project
-pocketsim dev
-
-# Or specify a device profile
-pocketsim dev --device iphone-15-pro
-pocketsim dev --device pixel-8
-```
-
-### Launch Desktop Developer UI
-
-```bash
+# Start the Desktop Simulator UI (served on http://127.0.0.1:7869)
+node apps/desktop/dist/server.js
+# Or with pnpm:
 pnpm --filter @pocketsim/desktop start
-# Open http://127.0.0.1:7869 in your browser
 ```
+
+### How to Run Your Real React Native or Expo App
+
+PocketSim connects directly to your existing React Native or Expo project via Metro Bundler:
+
+1. **Start your React Native or Expo development server** in your project root:
+   ```bash
+   # In your Expo or React Native app directory:
+   npx expo start
+   # or
+   npm start
+   # Metro will start listening on port 8081 (or custom port)
+   ```
+
+2. **Verify Project Compatibility**:
+   ```bash
+   pocketsim compat --project /path/to/my-react-native-app
+   ```
+   PocketSim's project detector inspects your `package.json` against the Native Module Registry and reports TurboModule / Fabric readiness.
+
+3. **Connect PocketSim to Metro**:
+   ```bash
+   pocketsim dev --metro 8081 --device iphone-16-pro
+   ```
+   PocketSim fetches the development bundle directly via Metro's WebSocket interface (`ws://localhost:8081/hot`), binds virtual NativeModules and JSI TurboModules, and boots your real app inside the lightweight virtual runtime without booting Xcode or Android Studio.
+
+4. **Testing in the Desktop UI**:
+   - Open [http://127.0.0.1:7869](http://127.0.0.1:7869) in your browser.
+   - Switch between **iPhone 16 Pro**, **Pixel 9 Pro**, **Galaxy S24 Ultra**, **Galaxy Z Fold 6**, or **iPhone Duo**.
+   - Test **KeyboardAvoidingView**: Switch between Virtual Phone Keyboard and Hardware PC Keyboard.
+   - Test **Responsive Multi-Screen Matrix**: Select `iOS Matrix (All 5)` or `Android Matrix (All 6)` to preview responsive breakpoints across all target devices simultaneously.
+   - Test **Sensors**: Mock GPS search, ambient temperature/weather condition for APIs, battery levels, network conditioning (5G, LTE, Slow 2G, Airplane Mode), and accelerometer shake.
 
 ---
+
+## 4. Automation for AI Coding Agents
+
+AI Coding Agents (Claude Code, Cursor, Codex, Gemini CLI) can operate PocketSim headlessly or interactively via the **Local Bridge HTTP & WebSocket RPC** on `http://127.0.0.1:7868`:
+
+| HTTP Endpoint | Method | Description | Payload Example |
+|---|---|---|---|
+| `/health` | `GET` | Health check & engine status | Returns `{ status: "ok", version: "0.1.0" }` |
+| `/session` | `POST` | Allocate isolated agent session | `{ "agentId": "agent-1", "device": "iphone-16-pro" }` |
+| `/inspect` | `GET` | Dump semantic accessibility tree | Returns normalized hierarchy with `testID`, `role`, bounds `[x,y,w,h]` |
+| `/interact` | `POST` | Dispatch atomic UI event | `{ "action": "tap", "target": "login-button" }` |
+| `/interact` | `POST` | Enter text into native input | `{ "action": "type", "target": "email-input", "text": "user@example.com" }` |
+| `/sensors` | `POST` | Mock device hardware states | `{ "gps": { "lat": 37.7749, "lon": -122.4194 }, "battery": 80 }` |
+| `/screenshot` | `GET` | Capture PNG buffer of active screen | Returns binary image buffer |
+
+### Running Automated Test Flows (Maestro-Compatible)
+
+Coding agents can execute automated YAML test scripts in one command:
+
+```bash
+pocketsim test tests/e2e/auth-flow.yaml
+```
+
+Example Maestro flow (`auth-flow.yaml`):
+```yaml
+appId: com.pocketsim.app
+name: Authentication Conformance Flow
+device: iphone-16-pro
+---
+- tapOn: "Sign In"
+- assertVisible: "Email Address"
+- inputText: "user@pocketsim.dev"
+- tapOn: "Password"
+- inputText: "SecurePassword123"
+- tapOn: "Submit"
+- assertVisible: "Welcome Back"
+```
 
 ## 4. CLI Command Reference
 

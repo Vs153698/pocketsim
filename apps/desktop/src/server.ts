@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { listDeviceProfiles } from '@pocketsim/device-profiles';
+import { LocalBridgeServer } from '@pocketsim/local-bridge';
 import { renderDesktopHtml } from './html-template.js';
 
 export interface DesktopServerOptions {
@@ -9,6 +10,7 @@ export interface DesktopServerOptions {
 
 export class DesktopServer {
   private server: http.Server | null = null;
+  private bridgeServer: LocalBridgeServer | null = null;
   private port: number;
   private bridgePort: number;
 
@@ -18,6 +20,14 @@ export class DesktopServer {
   }
 
   public async start(): Promise<void> {
+    try {
+      this.bridgeServer = new LocalBridgeServer('127.0.0.1', this.bridgePort);
+      await this.bridgeServer.start();
+      this.bridgeServer.createSession({ deviceProfileId: 'iphone-15-pro' });
+    } catch {
+      // Bridge might already be running
+    }
+
     return new Promise((resolve, reject) => {
       const devices = listDeviceProfiles().map(d => ({
         id: d.id,
@@ -46,6 +56,11 @@ export class DesktopServer {
   }
 
   public async stop(): Promise<void> {
+    if (this.bridgeServer) {
+      await this.bridgeServer.stop();
+      this.bridgeServer = null;
+    }
+
     return new Promise((resolve) => {
       if (this.server) {
         this.server.close(() => {
